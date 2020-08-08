@@ -1,4 +1,4 @@
-import React,{useState,useEffect,createRef} from "react"
+import React, { useState, useEffect, createRef } from "react"
 import {
   Card,
   CardActions,
@@ -9,34 +9,50 @@ import {
   Typography,
 } from "@material-ui/core"
 import classNames from "classnames"
+
 import useStyles from "./styles"
 
 const NewsCard = ({
   article: { description, publishedAt, source, title, url, urlToImage },
-  i,activeArticle
+  activeArticle,
+  i,
 }) => {
-    const classes = useStyles()
-    const [elRefs, setElRefs] = useState([])
-    const scrollToRef = (ref) =>window.scroll(0,ref.current.offsetTop-50)
-        
-    
-    useEffect(() => {
-        setElRefs((refs)=>Array(20).fill.map((_,j)=>refs[j]|| createRef()))
-    }, [])
-    
-    useEffect(() => {
-        if (i === activeArticle && elRefs[activeArticle]) {
-            scrollToRef(elRefs[activeArticle])
-        }
-    },[i,activeArticle,elRefs])
+  const classes = useStyles()
+  const [elRefs, setElRefs] = useState([])
+  const scrollToRef = (ref) => window.scroll(0, ref.current.offsetTop + 80)
+
+  useEffect(() => {
+    window.scroll(0, 0)
+
+    setElRefs((refs) =>
+      Array(20)
+        .fill()
+        .map((_, j) => refs[j] || createRef())
+    )
+  }, [])
+
+  useEffect(() => {
+    if (i === activeArticle && elRefs[activeArticle]) {
+      scrollToRef(elRefs[activeArticle])
+    }
+  }, [i, activeArticle, elRefs])
+
   return (
-    <Card ref={elRefs[i]} className={classNames(classes.card,activeArticle===i?classes.activeCard:null)}>
+    <Card
+      ref={elRefs[i]}
+      className={classNames(
+        classes.card,
+        activeArticle === i ? classes.activeCard : null
+      )}
+    >
       <CardActionArea href={url} target="_blank">
-        <CardMedia className={classes.media}
+        <CardMedia
+          className={classes.media}
           image={
             urlToImage ||
-            "https://img.pngio.com/news-png-15-clip-arts-for-free-download-on-een-2019-news-png-1920_807.png"
+            "https://www.industry.gov.au/sites/default/files/August%202018/image/news-placeholder-738.png"
           }
+          title={title}
         />
         <div className={classes.details}>
           <Typography variant="body2" color="textSecondary" component="h2">
@@ -46,7 +62,12 @@ const NewsCard = ({
             {source.name}
           </Typography>
         </div>
-        <Typography className={classes.title} gutterBottom variant="h5">
+        <Typography
+          className={classes.title}
+          gutterBottom
+          variant="h5"
+          component="h2"
+        >
           {title}
         </Typography>
         <CardContent>
@@ -56,10 +77,10 @@ const NewsCard = ({
         </CardContent>
       </CardActionArea>
       <CardActions className={classes.cardActions}>
-        <Button size="small" color="primary">
+        <Button size="small" color="primary" href={url}>
           Learn More
         </Button>
-        <Typography variant="h5" color="textSecondary">
+        <Typography variant="h5" color="textSecondary" component="h2">
           {i + 1}
         </Typography>
       </CardActions>
